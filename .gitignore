@@ -17,3 +17,6 @@ demo/output/
 demo/results/
 demo/test/
 misc/
+prospect.egg-info/
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
