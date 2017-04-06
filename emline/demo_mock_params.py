@@ -5,6 +5,16 @@ from prospect.sources import CSPBasis
 tophat = priors.tophat
 from sedpy.observate import load_filters
 
+## model dust1 as well (2:1 rule) -- need to constrain
+## model dust_index as well (since attenuation now matters)
+## non-parameteric SFH -- 5 params (6 bins + mass)
+## logzneb -- fixed and set to logzsol (might want to leave free?)
+## choose filter intrpolation dynamically based on spectral resolution
+## S/N=4 reasonable for mocks, fit spectophotometry
+## COSMOS?
+## L_sol/M_f, M_f=M_star/S (mextra)
+## fl * l**2/c = fnu
+
 # --------------
 # RUN_PARAMS
 # --------------
@@ -24,8 +34,8 @@ run_params = {'verbose':True,
               # Mock model parameters
               'mass': 1e7,
               'logzsol': -0.5,
-              'tage': 12.,
-              'tau': 3.,
+              'tage': 0.5,
+              'tau': 80.,
               'dust2': 0.3,
               # Data manipulation parameters
               'logify_spectrum':False,
@@ -162,7 +172,7 @@ model_params.append({'name': 'tau', 'N': 1,
                         'init': 1.0,
                         'init_disp': 0.5,
                         'units': 'Gyr',
-                        'prior_function':priors.logarithmic,
+                        'prior_function':tophat,
                         'prior_args': {'mini':0.1, 'maxi':100}})
 
 model_params.append({'name': 'tage', 'N': 1,
@@ -267,6 +277,14 @@ model_params.append({'name': 'agb_dust', 'N': 1,
 
 # For speed we turn off nebular emission in the demo
 model_params.append({'name': 'add_neb_emission', 'N': 1,
+                        'isfree': False,
+                        'init': True})
+
+model_params.append({'name': 'add_neb_continuum', 'N': 1,
+                        'isfree': False,
+                        'init': True})
+
+model_params.append({'name': 'nebemlineinspec', 'N': 1,
                         'isfree': False,
                         'init': False})
 
